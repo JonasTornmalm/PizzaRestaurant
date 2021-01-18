@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using PizzaRestaurant.Web.Models;
+using PizzaRestaurant.Web.RESTClients.Interfaces;
+using Refit;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,20 +15,27 @@ namespace PizzaRestaurant.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IPizzaServiceAPI _pizzaServiceAPI;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IPizzaServiceAPI pizzaServiceAPI)
         {
             _logger = logger;
+            _pizzaServiceAPI = pizzaServiceAPI;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Menu()
         {
-            return View();
+            var response = await _pizzaServiceAPI.GetMenu();
+
+            var deserialize = new NewtonsoftJsonContentSerializer();
+            var model = await deserialize.DeserializeAsync<Menu>(response);
+
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

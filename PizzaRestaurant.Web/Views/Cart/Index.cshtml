@@ -1,0 +1,67 @@
+﻿@model PizzaRestaurant.Web.Models.Cart
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@Html.ValidationSummary(true)
+
+@if (Model.pizzas != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>
+                    Menu Number
+                </td>
+                <td>
+                    Name
+                </td>
+                <td>
+                    Price
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.pizzas)
+            {
+                <tr style="background: aliceblue;">
+                    <td>
+                        @item.menuNumber
+                    </td>
+                    <td>
+                        @item.name
+                    </td>
+                    <td>
+                        @item.price
+                    </td>
+                </tr>
+            }
+            @foreach (var item in Model.sodas)
+            {
+                <tr style="background: #ffc6c68c">
+                    <td>
+                        @item.menuNumber
+                    </td>
+                    <td>
+                        @item.name
+                    </td>
+                    <td>
+                        @item.price
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                    Total price: @Model.totalPrice
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+}
+else
+{
+    <h1>Cart is empty</h1>
+}

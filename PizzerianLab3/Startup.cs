@@ -29,7 +29,7 @@ namespace PizzerianLab3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options => options
-            .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            .UseSqlServer(Configuration.GetConnectionString("PizzeriaApi"))
             .UseLazyLoadingProxies());
 
             services.AddSingleton<CartSingleton>();

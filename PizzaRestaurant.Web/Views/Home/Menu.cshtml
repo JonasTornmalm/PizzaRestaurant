@@ -1,0 +1,86 @@
+﻿@model PizzaRestaurant.Web.Models.Menu
+@{
+    ViewData["Title"] = "Pizza Menu";
+}
+<h1>@ViewData["Title"]</h1>
+
+@Html.ValidationSummary(true)
+
+@if (Model.pizzas.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>
+                    Menu Number
+                </td>
+                <td>
+                    Name
+                </td>
+                <td>
+                    Price
+                </td>
+                <td>
+                    Add
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.pizzas)
+            {
+                <tr style="background: aliceblue;">
+                    <td>
+                        @item.menuNumber
+                    </td>
+                    <td>
+                        @item.name
+                    </td>
+                    <td>
+                        @item.price
+                    </td>
+                    <td>
+                        <form asp-action="Add" asp-controller="Cart" asp-route-category="pizza" asp-route-menuNumber="@item.menuNumber">
+                            <button class="btn-block" type="submit">Add to cart</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            @foreach (var item in Model.sodas)
+            {
+                <tr style="background: #ffc6c68c">
+                    <td>
+                        @item.menuNumber
+                    </td>
+                    <td>
+                        @item.name
+                    </td>
+                    <td>
+                        @item.price
+                    </td>
+                    <td>
+                        <form asp-action="Add" asp-controller="Cart" asp-route-category="soda" asp-route-menuNumber="@item.menuNumber">
+                            <button class="btn-block" type="submit">Add to cart</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            @foreach (var item in Model.extraIngredients)
+            {
+                <tr style="background: #f1fff1">
+                    <td>
+                        @item.menuNumber
+                    </td>
+                    <td>
+                        @item.name
+                    </td>
+                    <td>
+                        @item.price
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

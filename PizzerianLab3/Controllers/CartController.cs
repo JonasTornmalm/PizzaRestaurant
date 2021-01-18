@@ -34,10 +34,10 @@ namespace PizzerianLab3.Controllers
         [SwaggerOperation(Summary = "Get current shopping cart")]
         public ActionResult GetCartContent()
         {
-            if (_cart.Order.IsEmpty)
-                return Ok("Your cart is empty");
-
             var viewCartContent = new ResponseViewModel();
+
+            if (_cart.Order.IsEmpty)
+                return Ok(viewCartContent);
 
             double totalPrice = 0;
             foreach (var pizzaOrder in _cart.Order.Pizzas)

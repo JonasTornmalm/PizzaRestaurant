@@ -11,5 +11,6 @@ namespace PizzerianLab3.Models
 		public List<PizzaViewModel> Pizzas { get; set; } = new List<PizzaViewModel>();
 		public List<SodaViewModel> Sodas { get; set; } = new List<SodaViewModel>();
 		public double TotalPrice { get; set; }
+		public bool IsEmpty => !Pizzas.Any() && !Sodas.Any();
 	}
 }

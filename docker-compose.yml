@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  pizzerianlab3:
+    ports:
+    - "5200:80"
+    image: ${DOCKER_REGISTRY-}pizzerianlab3
+    build:
+      context: .
+      dockerfile: PizzerianLab3/Dockerfile
+    depends_on:
+      - db
+
+  pizzarestaurant.api.inventory:
+    image: ${DOCKER_REGISTRY-}pizzarestaurantapiinventory
+    build:
+      context: .
+      dockerfile: PizzaRestaurant.Api.Inventory/Dockerfile
+
+
+  pizzarestaurant.web:
+    ports:
+    - "5100:80"
+    image: ${DOCKER_REGISTRY-}pizzarestaurantweb
+    build:
+      context: .
+      dockerfile: PizzaRestaurant.Web/Dockerfile
+    depends_on:
+      - pizzerianlab3
+      - db
+
+  db:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    environment:
+        SA_PASSWORD: "Adam123!"
+        ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
