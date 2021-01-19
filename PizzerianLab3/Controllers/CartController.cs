@@ -186,6 +186,20 @@ namespace PizzerianLab3.Controllers
             return Ok(request);
         }
 
+        [HttpPatch]
+        public IActionResult ClearCart()
+        {
+            if (!ModelState.IsValid)
+                BadRequest("Bad request");
+
+            if (_cart.Order.IsEmpty)
+                return BadRequest("Cart already empty");
+
+            _cart.Empty();
+
+            return Ok();
+        }
+
         // DELETE api/<ValuesController>/5
         [HttpDelete]
         [SwaggerOperation(Summary = "Remove items from shopping cart")]

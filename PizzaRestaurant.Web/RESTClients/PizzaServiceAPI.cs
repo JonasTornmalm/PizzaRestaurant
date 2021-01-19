@@ -31,5 +31,22 @@ namespace PizzaRestaurant.Web.RESTClients
         {
             return await _restClient.AddToCart(addToCartDTO);
         }
+        public async Task<HttpResponseMessage> ClearCart()
+        {
+            return await _restClient.ClearCart();
+        }
+        public async Task<HttpResponseMessage> AddExtraIngredients(UpdateCartDTO updateCartDTO)
+        {
+            return await _restClient.AddExtraIngredients(updateCartDTO);
+        }
+        public async Task<HttpContent> GetPendingOrders()
+        {
+            return await _restClient.GetPendingOrders();
+        }
+
+        public async Task<HttpResponseMessage> PlaceOrder()
+        {
+            return await _restClient.PlaceOrder();
+        }
     }
 }

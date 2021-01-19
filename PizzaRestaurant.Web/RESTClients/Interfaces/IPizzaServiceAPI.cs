@@ -21,6 +21,17 @@ namespace PizzaRestaurant.Web.RESTClients.Interfaces
         [Post("/cart")]
         Task<HttpResponseMessage> AddToCart([Body(BodySerializationMethod.Serialized)] AddToCartDTO addToCartDTO);
 
+        [Patch("/cart")]
+        Task<HttpResponseMessage> ClearCart();
+
+        [Put("/cart")]
+        Task<HttpResponseMessage> AddExtraIngredients([Body(BodySerializationMethod.Serialized)] UpdateCartDTO updateCartDTO);
+
         // Order
+        [Get("/order")]
+        Task<HttpContent> GetPendingOrders();
+
+        [Post("/order")]
+        Task<HttpResponseMessage> PlaceOrder();
     }
 }

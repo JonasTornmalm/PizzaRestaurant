@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PizzaRestaurant.Web.Models
 {
-    public class Cart
+    public class Order
     {
         public string orderId { get; set; }
         public List<Pizza> pizzas { get; set; }

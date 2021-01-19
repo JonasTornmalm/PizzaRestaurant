@@ -18,6 +18,7 @@ namespace PizzaRestaurant.Web.Models
 
     public class Pizza
     {
+        public Guid pizzaId { get; set; }
         public int menuNumber { get; set; }
         public string name { get; set; }
         public int price { get; set; }

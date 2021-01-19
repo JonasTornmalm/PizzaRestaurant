@@ -4,11 +4,11 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-@Html.ValidationSummary(true)
+<h2 id="tempData" style="color:forestgreen">@(TempData["ResponseMessage"] == null ? "" : TempData["ResponseMessage"])</h2>
 
 @if (Model.pizzas.Any())
 {
-    <table class="table">
+    <table class="table pizzamenu">
         <thead>
             <tr>
                 <td>
@@ -84,3 +84,13 @@
         </tbody>
     </table>
 }
+
+<script>
+    window.setInterval(function tempScript() {
+        var tempData = document.getElementById('tempData');
+
+        if (tempData.innerHTML !== "") {
+            tempData.remove();
+        }
+    }, 1000);
+</script>

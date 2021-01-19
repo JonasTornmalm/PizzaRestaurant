@@ -1,0 +1,28 @@
+﻿@model PizzaRestaurant.Web.Models.AddExtraIngredientsModel
+@{
+    ViewData["Title"] = "Add extra ingredients";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <tbody>
+        @foreach (var extraIngredient in Model.ExtraIngredients)
+        {
+            <tr>
+                <td>
+                    @extraIngredient.menuNumber
+                </td>
+                <td>
+                    @extraIngredient.name
+                </td>
+                <td>
+                    <form asp-action="AddExtraIngredients" asp-controller="Cart" asp-route-pizzaId="@Model.PizzaId">
+                        <input type="number" hidden asp-for="@Model.MenuNumber" value="@extraIngredient.menuNumber" name="MenuNumber"/>
+                        <button class="btn" type="submit"><i style="color:green;" class="fas fa-plus-square"></i></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

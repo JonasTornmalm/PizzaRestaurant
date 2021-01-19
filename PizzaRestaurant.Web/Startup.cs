@@ -27,6 +27,7 @@ namespace PizzaRestaurant.Web
             services.AddControllersWithViews();
 
             services.AddHttpClient<IPizzaServiceAPI, PizzaServiceAPI>();
+            services.AddHttpClient<IInventoryServiceAPI, InventoryServiceAPI>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

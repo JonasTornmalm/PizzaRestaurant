@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PizzerianLab3.Data;
 using PizzerianLab3.Extensions;
+using PizzerianLab3.RESTClients;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,8 @@ namespace PizzerianLab3
             services.AddDbContext<AppDbContext>(options => options
             .UseSqlServer(Configuration.GetConnectionString("PizzeriaApi"))
             .UseLazyLoadingProxies());
+
+            services.AddHttpClient<IInventoryServiceAPI, InventoryServiceAPI>();
 
             services.AddSingleton<CartSingleton>();
             services.AddControllers();

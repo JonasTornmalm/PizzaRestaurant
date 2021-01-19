@@ -12,10 +12,14 @@ services:
       - db
 
   pizzarestaurant.api.inventory:
+    ports:
+    - "5300:80"
     image: ${DOCKER_REGISTRY-}pizzarestaurantapiinventory
     build:
       context: .
       dockerfile: PizzaRestaurant.Api.Inventory/Dockerfile
+    depends_on:
+      - db
 
 
   pizzarestaurant.web:
@@ -27,6 +31,7 @@ services:
       dockerfile: PizzaRestaurant.Web/Dockerfile
     depends_on:
       - pizzerianlab3
+      - pizzarestaurant.api.inventory
       - db
 
   db:

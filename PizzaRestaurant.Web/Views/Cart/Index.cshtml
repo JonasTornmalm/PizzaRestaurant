@@ -1,10 +1,9 @@
 ﻿@model PizzaRestaurant.Web.Models.Cart
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
+    ViewData["Title"] = "Cart";
 }
 @Html.ValidationSummary(true)
+<h2 id="tempData" style="color:red">@(TempData["ResponseMessage"] == null ? "" : TempData["ResponseMessage"])</h2>
 
 @if (Model.pizzas != null)
 {
@@ -12,7 +11,7 @@
         <thead>
             <tr>
                 <td>
-                    Menu Number
+                    Category
                 </td>
                 <td>
                     Name
@@ -20,34 +19,60 @@
                 <td>
                     Price
                 </td>
+                <td>
+                    Modify
+                </td>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.pizzas)
+            @foreach (var pizza in Model.pizzas)
             {
                 <tr style="background: aliceblue;">
                     <td>
-                        @item.menuNumber
+                        Pizza
                     </td>
                     <td>
-                        @item.name
+                        @pizza.name
                     </td>
                     <td>
-                        @item.price
+                        @pizza.price
+                    </td>
+                    <td>
+                        <a asp-action="AddExtraIngredients" asp-controller="Cart" asp-route-pizzaId="@pizza.pizzaId"><i class="fas fa-pen"></i></a>
                     </td>
                 </tr>
+                @foreach (var extraIngredient in pizza.extraIngredients)
+                {
+                    <tr style="background: aliceblue;">
+                        <td>
+                            Extra
+                        </td>
+                        <td style="font-family: cursive; font-size: smaller;">
+                            + @extraIngredient.name
+                        </td>
+                        <td>
+                            @extraIngredient.price
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                }
             }
             @foreach (var item in Model.sodas)
             {
                 <tr style="background: #ffc6c68c">
                     <td>
-                        @item.menuNumber
+                        Soda
                     </td>
                     <td>
                         @item.name
                     </td>
                     <td>
                         @item.price
+                    </td>
+                    <td>
+
                     </td>
                 </tr>
             }
@@ -60,6 +85,12 @@
             </tr>
         </tfoot>
     </table>
+    <form asp-action="PlaceOrder" asp-controller="Order">
+        <button class="btn-block" type="submit">Place order</button>
+    </form>
+    <form asp-action="ClearCart" asp-controller="Cart">
+        <button class="btn-block" type="submit">Clear cart</button>
+    </form>
 }
 else
 {

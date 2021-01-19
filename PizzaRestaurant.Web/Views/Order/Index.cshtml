@@ -1,0 +1,86 @@
+﻿@model IEnumerable<PizzaRestaurant.Web.Models.Order>
+@{
+    ViewData["Title"] = "Order";
+}
+
+@Html.ValidationSummary(true)
+
+<h2>@TempData["ResponseMessage"]</h2>
+
+@if (Model.Any())
+{
+    @foreach (var order in Model)
+    {
+        <h4 style="font-weight: 200;">Order number: @order.orderId</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>
+                        Category
+                    </td>
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        Price
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pizza in order.pizzas)
+                {
+                    <tr style="background: aliceblue;">
+                        <td>
+                            Pizza
+                        </td>
+                        <td>
+                            @pizza.name
+                        </td>
+                        <td>
+                            @pizza.price Kr
+                        </td>
+                    </tr>
+                    @foreach (var extraIngredient in pizza.extraIngredients)
+                    {
+                        <tr style="background: aliceblue;">
+                            <td>
+                                Extra
+                            </td>
+                            <td style="font-family: cursive; font-size: smaller;">
+                                + @extraIngredient.name
+                            </td>
+                            <td>
+                                @extraIngredient.price Kr
+                            </td>
+                        </tr>
+                    }
+                }
+                @foreach (var soda in order.sodas)
+                {
+                    <tr style="background: #ffc6c68c">
+                        <td>
+                            Soda
+                        </td>
+                        <td>
+                            @soda.name
+                        </td>
+                        <td>
+                            @soda.price Kr
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">
+                        Total price: @order.totalPrice Kr
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    }
+}
+else
+{
+    <h1>No pending orders</h1>
+}

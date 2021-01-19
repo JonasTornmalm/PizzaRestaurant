@@ -1,0 +1,65 @@
+﻿@model IEnumerable<PizzaRestaurant.Web.Models.Ingredient>
+
+@{
+    ViewData["Title"] = "Inventory";
+}
+
+@Html.ValidationSummary(true)
+
+<h2 id="tempData" style="color:forestgreen">@(TempData["ResponseMessage"] == null ? "" : TempData["ResponseMessage"])</h2>
+
+@if (Model.Any())
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>
+                    Name
+                </td>
+                <td>
+                    Amount
+                </td>
+                <td>
+                    Edit
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ingredient in Model)
+            {
+                <tr>
+                    <td>
+                        @ingredient.Name
+                    </td>
+                    <td>
+                        @ingredient.Amount
+                    </td>
+                    <td>
+                        <form asp-action="Edit" asp-controller="Inventory" asp-route-id="@ingredient.Id" method="post">
+                            <input type="number" asp-for="@ingredient.Amount" name="amount" />
+                            <button class="btn" type="submit">Update</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <form asp-action="MassDelivery" asp-controller="Inventory">
+        <button class="btn-block" type="submit">Mass delivery</button>
+    </form>
+}
+else
+{
+    <h1>No ingredients</h1>
+}
+
+<script>
+    window.setInterval(function tempScript() {
+        var tempData = document.getElementById('tempData');
+
+        if (tempData.innerHTML !== "") {
+            tempData.remove();
+        }
+    }, 1000);
+</script>

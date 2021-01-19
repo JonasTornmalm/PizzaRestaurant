@@ -27,7 +27,7 @@ namespace PizzaRestaurant.Web.Controllers
             var deserialize = new NewtonsoftJsonContentSerializer();
             var model = await deserialize.DeserializeAsync<Cart>(response);
 
-            if (model.IsEmpty)
+            if (model.isEmpty)
             {
                 ModelState.AddModelError("", "Your cart is empty");
                 return View(model);
@@ -71,53 +71,76 @@ namespace PizzaRestaurant.Web.Controllers
 
             if (!response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError("", "Bad request, cant add");
-                return RedirectToAction("Menu", "Home");
+                TempData["ResponseMessage"] = "Was not able to add to cart";
+                return RedirectToAction("Index");
             }
 
+            TempData["ResponseMessage"] = $"Added {category} to cart";
+            return RedirectToAction("Menu", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ClearCart()
+        {
+            var response = await _pizzaServiceAPI.ClearCart();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["ResponseMessage"] = "Cart already empty";
+                return RedirectToAction("Index");
+            }
             return RedirectToAction("Index");
         }
 
-        // GET: CartController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public ActionResult AddExtraIngredients(Guid pizzaId)
         {
-            return View();
+            var model = new AddExtraIngredientsModel()
+            {
+                PizzaId = pizzaId,
+                ExtraIngredients = new List<ExtraIngredient>()
+                {
+                    new ExtraIngredient(){menuNumber = 1, name = "Ham"},
+                    new ExtraIngredient(){menuNumber = 2, name = "Pineapple"},
+                    new ExtraIngredient(){menuNumber = 3, name = "Mushrooms"},
+                    new ExtraIngredient(){menuNumber = 4, name = "Onion"},
+                    new ExtraIngredient(){menuNumber = 5, name = "KebabSauce"},
+                    new ExtraIngredient(){menuNumber = 6, name = "Shrimps"},
+                    new ExtraIngredient(){menuNumber = 7, name = "Clams"},
+                    new ExtraIngredient(){menuNumber = 8, name = "Artichoke"},
+                    new ExtraIngredient(){menuNumber = 9, name = "Kebab"},
+                    new ExtraIngredient(){menuNumber = 10, name = "Coriander"}
+                }
+            };
+
+            return View(model);
         }
 
-        // POST: CartController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> AddExtraIngredients(Guid pizzaId, [FromForm] AddExtraIngredientsModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                var extraIngredients = new List<ExtraIngredientDTO>()
+                {
+                    new ExtraIngredientDTO(){ MenuNumber = model.MenuNumber }
+                };
+                var updateCartDTO = new UpdateCartDTO()
+                {
+                    PizzaId = pizzaId,
+                    ExtraIngredients = extraIngredients
+                };
+                var response = await _pizzaServiceAPI.AddExtraIngredients(updateCartDTO);
 
-        // GET: CartController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+                if (!response.IsSuccessStatusCode)
+                {
+                    TempData["ResponseMessage"] = "Was not able to add extra ingredient";
+                    return RedirectToAction("Index");
+                }
 
-        // POST: CartController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AddExtraIngredients", new { pizzaId = pizzaId });
             }
-            catch
-            {
-                return View();
-            }
+            return BadRequest();
         }
     }
 }

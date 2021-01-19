@@ -4,6 +4,7 @@ using PizzerianLab3.Data;
 using PizzerianLab3.Data.Entities;
 using PizzerianLab3.DTOs;
 using PizzerianLab3.Models;
+using PizzerianLab3.RESTClients;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,13 @@ namespace PizzerianLab3.Controllers
     {
         private readonly AppDbContext _context;
         private readonly CartSingleton _cart;
+        private readonly IInventoryServiceAPI _inventoryServiceAPI;
 
-        public OrderController(AppDbContext context, CartSingleton cart)
+        public OrderController(AppDbContext context, CartSingleton cart, IInventoryServiceAPI inventoryServiceAPI)
         {
             _context = context;
             _cart = cart;
+            _inventoryServiceAPI = inventoryServiceAPI;
         }
 
         // GET api/<OrderController>/5
@@ -100,9 +103,13 @@ namespace PizzerianLab3.Controllers
         public async Task<IActionResult> Post()
         {
             if (!ModelState.IsValid)
-                BadRequest("Bad request");
+                return BadRequest("Bad request");
 
             var itemsInCart = _cart.Order;
+
+            if (itemsInCart.IsEmpty)
+                return BadRequest("Cart empty");
+
             var order = new Order()
             {
                 Id = Guid.NewGuid(),
@@ -160,8 +167,15 @@ namespace PizzerianLab3.Controllers
                 order.Sodas.Add(servingSoda);
             }
 
+            var response = await _inventoryServiceAPI.ProcessOrder(_cart.Order);
+
+            if (!response.IsSuccessStatusCode)
+                return BadRequest("Not enough ingredients");
+
             _context.Add(order);
             await _context.SaveChangesAsync();
+
+            _cart.Empty();
 
             return Ok($"Your order has been placed {order.Id}");
         }
