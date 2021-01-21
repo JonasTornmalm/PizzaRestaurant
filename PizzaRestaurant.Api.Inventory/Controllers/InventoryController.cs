@@ -22,7 +22,7 @@ namespace PizzaRestaurant.Api.Inventory.Controllers
         }
         // GET: api/<InventoryController>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetInventory()
         {
             var inventory = await _context.Inventory.ToListAsync();
             return Ok(inventory);
