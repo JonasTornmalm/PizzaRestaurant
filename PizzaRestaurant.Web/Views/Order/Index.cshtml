@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<PizzaRestaurant.Web.Models.Order>
+@using PizzaRestaurant.Web.Utilities
 @{
     ViewData["Title"] = "Order";
 }
@@ -12,6 +13,7 @@
     @foreach (var order in Model)
     {
         <h4 style="font-weight: 200;">Order number: @order.orderId</h4>
+        <h5>@UnixTimeStampUtilities.UnixTimeToRelativeTime(order.modified)</h5>
         <table class="table">
             <thead>
                 <tr>

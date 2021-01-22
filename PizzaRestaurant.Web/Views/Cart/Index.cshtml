@@ -38,7 +38,7 @@
                         @pizza.price
                     </td>
                     <td>
-                        <a asp-action="AddExtraIngredients" asp-controller="Cart" asp-route-pizzaId="@pizza.pizzaId"><i class="fas fa-pen"></i></a>
+                        <a id="editButton" asp-action="AddExtraIngredients" asp-controller="Cart" asp-route-pizzaId="@pizza.pizzaId"><i class="fas fa-pen"></i></a>
                     </td>
                 </tr>
                 @foreach (var extraIngredient in pizza.extraIngredients)
@@ -86,7 +86,7 @@
         </tfoot>
     </table>
     <form asp-action="PlaceOrder" asp-controller="Order">
-        <button class="btn-block" type="submit">Place order</button>
+        <button id="orderButton" class="btn-block" type="submit">Place order</button>
     </form>
     <form asp-action="ClearCart" asp-controller="Cart">
         <button class="btn-block" type="submit">Clear cart</button>

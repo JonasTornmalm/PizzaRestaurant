@@ -43,6 +43,7 @@ namespace PizzerianLab3.Controllers
                     x.Id,
                     x.Pizzas,
                     x.Sodas,
+                    x.Modified,
                     x.TotalPrice
                 }).ToListAsync();
 
@@ -52,6 +53,7 @@ namespace PizzerianLab3.Controllers
             foreach (var order in orders)
             {
                 var viewActiveOrderModel = new ResponseViewModel();
+                viewActiveOrderModel.Modified = order.Modified;
                 foreach (var pizza in order.Pizzas)
                 {
                     var viewPizza = new PizzaViewModel();

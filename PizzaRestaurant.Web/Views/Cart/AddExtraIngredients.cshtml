@@ -19,7 +19,7 @@
                 <td>
                     <form asp-action="AddExtraIngredients" asp-controller="Cart" asp-route-pizzaId="@Model.PizzaId">
                         <input type="number" hidden asp-for="@Model.MenuNumber" value="@extraIngredient.menuNumber" name="MenuNumber"/>
-                        <button class="btn" type="submit"><i style="color:green;" class="fas fa-plus-square"></i></button>
+                        <button id="addExtra" class="btn" type="submit"><i style="color:green;" class="fas fa-plus-square"></i></button>
                     </form>
                 </td>
             </tr>

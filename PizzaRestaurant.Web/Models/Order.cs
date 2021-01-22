@@ -10,6 +10,7 @@ namespace PizzaRestaurant.Web.Models
         public string orderId { get; set; }
         public List<Pizza> pizzas { get; set; }
         public List<Soda> sodas { get; set; }
+        public long modified { get; set; }
         public int totalPrice { get; set; }
         public bool isEmpty { get; set; }
     }

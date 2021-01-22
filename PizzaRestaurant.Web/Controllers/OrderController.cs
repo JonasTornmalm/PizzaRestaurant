@@ -29,7 +29,9 @@ namespace PizzaRestaurant.Web.Controllers
                 return View(new List<Order>());
             }
 
-            return View(model);
+            var sortedModel = model.OrderByDescending(x => x.modified);
+
+            return View(sortedModel);
         }
 
         [HttpPost]
