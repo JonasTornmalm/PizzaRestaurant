@@ -1,5 +1,5 @@
 # PizzaRestaurant
-Lab 6 VG
+Lab 6
 
 Använde mig mycket av "Transfer Object Pattern" för att skicka data med flera properties, från client till server.
 
